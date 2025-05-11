@@ -22,14 +22,17 @@ async function processFile() {
 
   const ankiData = [];
 
-  // Pula os números e espaços (pegando blocos de 4: número, front, back, vazio)
+  // Pula os números e espaços (pegando blocos de 4: front, back, tradução, vazio)
   for (let i = 0; i < linhas.length; i++) {
     const linha = linhas[i];
-    if (linha.startsWith("Back:")) {
-      const front = linhas[i - 1].trim();
-      const back = linha.replace("Back:", "").trim();
+    if (linha.startsWith("Front:")) {
+      const front = linha.replace("Front: ", "").trim();
+      const back = linhas[i + 1].replace("Back:", "").trim();
       ankiData.push([front, back]);
+    } else {
+      console.log("Linha não reconhecida:", linha);
     }
+    i += 2; // Pula os próximos 3 elementos (back, tradução, vazio)
   }
 
   // Gera o CSV com a primeira linha como cabeçalho
